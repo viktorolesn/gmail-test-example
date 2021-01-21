@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class GmailLoginPage extends GmailHomePage {
     @FindBy(xpath="//*[@id=\"initialView\"]/div[2]")
@@ -51,9 +52,10 @@ public class GmailLoginPage extends GmailHomePage {
 
     public void loginToGmail(String strUserName, String strPassword){
         //Wait until form appears
-        ArrayList tabs = new ArrayList (driver.getWindowHandles());
-        System.out.println(tabs.size());
-        driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "2");
+        Set<String> windowHandles = driver.getWindowHandles();
+        String[] tabs = windowHandles.toArray(new String[]{});
+        String handleOfSecondWindow = tabs[1];
+        driver.switchTo().window(handleOfSecondWindow);
         wait.until(ExpectedConditions.visibilityOf(loginForm));
         //Fill user name
         this.setUserName(strUserName);
